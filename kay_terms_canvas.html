@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Key Terms and Definitions — List + Practice</title>
+</head>
+<body style="margin:0; font-family:Arial, Helvetica, sans-serif; color:#0F172A; background:#ffffff; line-height:1.7; font-size:1.05rem;">
+
+  <!-- Banner -->
+  <div style="background:#555960; color:#ffffff;">
+    <div style="width:100%; max-width:1140px; margin:0 auto; padding:0 8px;">
+      <div role="heading" aria-level="1"
+           style="display:flex; align-items:center; gap:.4rem; padding:.7rem 0; margin:0; text-transform:uppercase; letter-spacing:.06em; font-weight:800; font-size:1.6rem;">
+        <span id="pageTitle">Key Terms and Definitions</span>
+      </div>
+    </div>
+  </div>
+
+  <main style="width:100%; max-width:1140px; margin:0 auto; padding:0 8px;">
+    <p style="color:#475569; margin:1rem 0 1.25rem;">Search, browse, or switch to practice mode.</p>
+
+    <!-- Toolbar -->
+    <div id="toolbar" role="toolbar" aria-label="Actions"
+         style="display:flex; gap:.5rem; flex-wrap:wrap; margin: 1rem 0;">
+      <input id="searchInput" type="search" placeholder="Search term…" aria-label="Search term"
+             style="max-width:420px; min-width:260px; padding:.5rem .75rem; border:1px solid #E2E8F0; border-radius:.5rem;" />
+      <button id="searchBtn" type="button" title="Search for a term"
+              style="border:1px solid #E2E8F0; background:#ffffff; color:#0F172A; padding:.5rem .75rem; border-radius:.5rem; font-weight:700; cursor:pointer;">
+        Search
+      </button>
+      <button id="clearSearch" type="button" title="Close search and show all terms"
+              style="display:none; border:1px solid #E2E8F0; background:#ffffff; color:#0F172A; padding:.5rem .75rem; border-radius:.5rem; font-weight:700; cursor:pointer;">
+        Close Search
+      </button>
+      <button id="goPractice" type="button" title="Go to Practice Exercises"
+              style="background:#CFB991; color:#111111; border:0; padding:.5rem .75rem; border-radius:.5rem; font-weight:800; cursor:pointer;">
+        Practice Exercises
+      </button>
+    </div>
+
+    <!-- LIST SCREEN -->
+    <section id="screen-list" aria-label="Term list">
+      <div id="list" aria-live="polite" style="display:grid; gap:.75rem;"></div>
+    </section>
+
+    <!-- PRACTICE SCREEN -->
+    <section id="screen-practice" aria-labelledby="practiceHeading" style="display:none;">
+      <h2 id="practiceHeading" style="margin:10px 0; color:#475569;">Practice Exercises</h2>
+
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin: 1rem 0;">
+        <button id="exitPractice" type="button" title="Back to list"
+                style="border:1px solid #E2E8F0; background:#ffffff; color:#0F172A; padding:.5rem .75rem; border-radius:.5rem; font-weight:700; cursor:pointer;">
+          Exit Practice
+        </button>
+      </div>
+
+      <div aria-label="Practice panel"
+           style="border:1px solid #E2E8F0; border-left:4px solid #CFB991; border-radius:.75rem; background:#ffffff; padding:1rem 1.25rem; box-shadow:0 .25rem .75rem rgba(0,0,0,.06);">
+        <!-- Question block -->
+        <div id="questionBlock">
+          <div id="defBox" style="margin-bottom:.5rem; font-size:1.05rem;"></div>
+
+          <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">
+            <label for="answer" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
+              Your answer
+            </label>
+            <select id="answer" style="min-width:260px; max-width:420px; padding:.5rem .75rem; border:1px solid #E2E8F0; border-radius:.5rem;"></select>
+            <button id="checkBtn" type="button"
+                    style="background:#CFB991; color:#111111; border:0; padding:.5rem .75rem; border-radius:.5rem; font-weight:800; cursor:pointer;">
+              Submit
+            </button>
+            <button id="skipBtn" type="button" title="Show answer & next"
+                    style="border:1px solid #E2E8F0; background:#ffffff; color:#0F172A; padding:.5rem .75rem; border-radius:.5rem; font-weight:700; cursor:pointer;">
+              Skip
+            </button>
+            <button id="nextBtn" type="button" title="Next card"
+                    style="display:none; border:1px solid #E2E8F0; background:#ffffff; color:#0F172A; padding:.5rem .75rem; border-radius:.5rem; font-weight:700; cursor:pointer;">
+              Next
+            </button>
+          </div>
+
+          <div id="feedback" aria-live="polite" style="margin-top:.5rem; font-weight:800;"></div>
+
+          <div aria-label="Progress"
+               style="height:10px; background:#E2E8F0; border-radius:999px; overflow:hidden; margin-top:12px;">
+            <div id="bar" style="height:100%; background:#CFB991; width:0%;"></div>
+          </div>
+
+          <p id="counter" style="margin: 8px 0 0; color:#475569;"></p>
+        </div>
+
+        <!-- Results block -->
+        <div id="resultsBlock" aria-live="polite" style="display:none; margin-top:10px;">
+          <h3 style="margin:0 0 8px; color:#111111;">Results</h3>
+          <p id="scoreText" style="margin:0 0 10px; font-weight:800;"></p>
+          <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin: 1rem 0;">
+            <button id="tryAgainBtn" type="button"
+                    style="background:#CFB991; color:#111111; border:0; padding:.5rem .75rem; border-radius:.5rem; font-weight:800; cursor:pointer;">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="margin:2rem 0 3rem; padding-top:1rem; border-top:1px solid #E2E8F0; color:#6b7280;"></footer>
+  </main>
+
+  <script>
+    (function(){
+      // ---------- Data ----------
+      var terms = [
+        { term: 'Data Flow Diagram (DFD)', def: 'Visualizes how data moves through processes, data stores, and external entities.' },
+        { term: 'Entity-Relationship Diagram (ERD)', def: 'A data model showing entities, attributes, and relationships; foundation for database design.' },
+        { term: 'Feasibility Analysis', def: 'Early assessment of project viability across Technical, Economic, Legal, Operational, and Schedule factors (TELOS).' },
+        { term: 'Functional Requirement', def: 'What the system must do—features and behaviors that deliver capabilities to users.' },
+        { term: 'Nonfunctional Requirement', def: 'Quality attributes specifying how well the system works (e.g., performance, security, usability, reliability).' },
+        { term: 'Requirement', def: 'A verifiable statement of need the system must satisfy; guides scope, design, and testing.' },
+        { term: 'SDLC (Systems Development Life Cycle)', def: 'Structured phases for building systems: planning, analysis, design, implementation, testing, deployment, maintenance.' },
+        { term: 'Stakeholder', def: 'Anyone who influences, uses, or is affected by the system.' },
+        { term: 'System', def: 'Interrelated components working together within a boundary to achieve a purpose.' },
+        { term: 'Use Case', def: 'A scenario of how an actor interacts with the system to achieve a goal, including normal and alternate flows.' }
+      ];
+      terms.sort(function(a,b){ return a.term.localeCompare(b.term); });
+
+      // ---------- Elements ----------
+      var pageTitle   = document.getElementById('pageTitle');
+      var listEl      = document.getElementById('list');
+      var searchInput = document.getElementById('searchInput');
+      var searchBtn   = document.getElementById('searchBtn');
+      var clearBtn    = document.getElementById('clearSearch');
+      var toolbar     = document.getElementById('toolbar');
+
+      var screenList      = document.getElementById('screen-list');
+      var screenPractice  = document.getElementById('screen-practice');
+      var exitPracticeBtn = document.getElementById('exitPractice');
+      var practiceBtn     = document.getElementById('goPractice');
+
+      var defBox   = document.getElementById('defBox');
+      var sel      = document.getElementById('answer');
+      var checkBtn = document.getElementById('checkBtn');
+      var skipBtn  = document.getElementById('skipBtn');
+      var nextBtn  = document.getElementById('nextBtn');
+      var feedback = document.getElementById('feedback');
+      var bar      = document.getElementById('bar');
+      var counter  = document.getElementById('counter');
+
+      var questionBlock = document.getElementById('questionBlock');
+      var resultsBlock  = document.getElementById('resultsBlock');
+      var scoreText     = document.getElementById('scoreText');
+      var tryAgainBtn   = document.getElementById('tryAgainBtn');
+
+      // ---------- Helpers (no CSS classes; inline style only) ----------
+      function show(el, display) { el.style.display = display || ''; }
+      function hide(el)          { el.style.display = 'none'; }
+
+      function trimLower(s){ return String(s||'').toLowerCase().replace(/^\\s+|\\s+$/g,''); }
+      function normalize(s){ return String(s).toLowerCase().replace(/\\s+/g,' ').replace(/^\\s+|\\s+$/g,''); }
+      function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      function shuffle(arr){ for(var j=arr.length-1;j>0;j--){ var k=Math.floor(Math.random()*(j+1)); var t=arr[j]; arr[j]=arr[k]; arr[k]=t; } return arr; }
+
+      // ---------- List render/search ----------
+      function renderList(){
+        listEl.innerHTML = '';
+        var filterText = trimLower(searchInput.value);
+        var filtered = terms.filter(function(item){
+          return !filterText || item.term.toLowerCase().indexOf(filterText) !== -1;
+        });
+
+        if (!filtered.length){
+          var empty = document.createElement('div');
+          empty.textContent = 'No terms found.';
+          empty.style.border = '1px solid #E2E8F0';
+          empty.style.borderLeft = '4px solid #CFB991';
+          empty.style.borderRadius = '.75rem';
+          empty.style.background = '#ffffff';
+          empty.style.padding = '1rem 1.25rem';
+          empty.style.boxShadow = '0 .25rem .75rem rgba(0,0,0,.06)';
+          listEl.appendChild(empty);
+          return;
+        }
+
+        for (var i=0; i<filtered.length; i++){
+          var t = filtered[i];
+
+          var card = document.createElement('article');
+          card.style.border = '1px solid #E2E8F0';
+          card.style.borderLeft = '4px solid #CFB991';
+          card.style.borderRadius = '.75rem';
+          card.style.background = '#ffffff';
+          card.style.padding = '1rem 1.25rem';
+          card.style.boxShadow = '0 .25rem .75rem rgba(0,0,0,.06)';
+
+          var h2 = document.createElement('h2');
+          h2.textContent = t.term;
+          h2.style.margin = '0 0 .35rem';
+          h2.style.fontSize = '1.1rem';
+          h2.style.color = '#111111';
+
+          var p = document.createElement('p');
+          p.textContent = t.def;
+          p.style.margin = '0';
+
+          card.appendChild(h2);
+          card.appendChild(p);
+          listEl.appendChild(card);
+        }
+      }
+
+      function doSearch(){
+        if (trimLower(searchInput.value)) { show(clearBtn, ''); }
+        else { hide(clearBtn); }
+        renderList();
+      }
+      function resetSearch(){
+        searchInput.value = '';
+        hide(clearBtn);
+        renderList();
+      }
+
+      // ---------- Practice mode ----------
+      var deck = [], idx = 0, correctCount = 0, answered = false;
+
+      function setupDropdown(){
+        sel.innerHTML = '';
+        var ph = document.createElement('option');
+        ph.value = '';
+        ph.textContent = '— choose a term —';
+        ph.disabled = true; ph.selected = true; ph.hidden = true;
+        sel.appendChild(ph);
+
+        for (var i=0; i<terms.length; i++){
+          var op = document.createElement('option');
+          op.value = terms[i].term;
+          op.textContent = terms[i].term;
+          sel.appendChild(op);
+        }
+      }
+
+      function startPractice(){
+        deck = shuffle(terms.slice());
+        idx = 0; correctCount = 0; answered = false;
+        setupDropdown();
+        showCard();
+        show(questionBlock); hide(resultsBlock);
+        sel.focus();
+      }
+
+      function showCard(){
+        if (!deck.length){ defBox.textContent = 'No cards available.'; return; }
+        var cur = deck[idx];
+        defBox.textContent = cur.def;
+        sel.value = '';
+        feedback.innerHTML = '';
+        hide(nextBtn);
+        answered = false;
+        updateProgress();
+      }
+
+      function check(){
+        var cur = deck[idx];
+        var choice = sel.value || '';
+        if (!choice){
+          feedback.textContent = 'Please select an answer.';
+          feedback.style.color = '#0F172A';
+          return;
+        }
+        if (answered) return;
+
+        var correct = normalize(choice) === normalize(cur.term);
+        if (correct) correctCount++;
+        answered = true;
+
+        if (correct){
+          feedback.innerHTML = '✅ <span style="color:#059669;">Correct!</span> — <em>' + escapeHtml(cur.term) + '</em>';
+        } else {
+          feedback.innerHTML = '❌ <span style="color:#DC2626;">Not quite.</span> Correct answer: <em>' + escapeHtml(cur.term) + '</em>';
+        }
+        show(nextBtn, '');
+        nextBtn.focus();
+      }
+
+      function next(){
+        if (idx < deck.length - 1){
+          idx++;
+          showCard();
+          sel.focus();
+        } else {
+          showResults();
+        }
+      }
+
+      function skip(){
+        if (!answered){ answered = true; }
+        feedback.innerHTML = 'ℹ️ Correct answer: <em>' + escapeHtml(deck[idx].term) + '</em>';
+        show(nextBtn, '');
+        nextBtn.focus();
+      }
+
+      function showResults(){
+        var total = deck.length;
+        var pct = Math.round((correctCount / Math.max(total,1)) * 100);
+        scoreText.innerHTML = 'You scored <strong>' + correctCount + '</strong> out of <strong>' + total + '</strong> (' + pct + '%).';
+        hide(questionBlock); show(resultsBlock, '');
+        bar.style.width = '100%';
+        counter.textContent = 'Complete';
+        tryAgainBtn.focus();
+      }
+
+      function updateProgress(){
+        var pct = (idx / Math.max(deck.length,1)) * 100;
+        bar.style.width = pct.toFixed(1) + '%';
+        counter.textContent = (idx + 1) + ' of ' + deck.length;
+      }
+
+      // ---------- Events ----------
+      renderList();
+
+      if (searchBtn)  searchBtn.addEventListener('click', doSearch);
+      if (clearBtn)   clearBtn.addEventListener('click', resetSearch);
+      if (searchInput){
+        searchInput.addEventListener('keydown', function(e){
+          if (e.key === 'Enter'){ e.preventDefault(); doSearch(); }
+          if (e.key === 'Escape'){ e.preventDefault(); resetSearch(); this.blur(); }
+        });
+        searchInput.addEventListener('blur', function(){
+          if (!trimLower(this.value)) resetSearch();
+        });
+      }
+
+      if (practiceBtn){
+        practiceBtn.addEventListener('click', function(){
+          pageTitle.textContent = 'Practice Exercises';
+          hide(screenList); show(screenPractice, '');
+          hide(toolbar);
+          startPractice();
+        });
+      }
+      if (exitPracticeBtn){
+        exitPracticeBtn.addEventListener('click', function(){
+          pageTitle.textContent = 'Key Terms and Definitions';
+          hide(screenPractice); show(screenList, '');
+          show(toolbar, '');
+        });
+      }
+
+      if (checkBtn) checkBtn.addEventListener('click', check);
+      if (nextBtn)  nextBtn.addEventListener('click', next);
+      if (skipBtn)  skipBtn.addEventListener('click', skip);
+
+      if (sel){
+        sel.addEventListener('keydown', function(e){
+          if (e.key === 'Enter'){ e.preventDefault(); check(); }
+        });
+      }
+
+      if (tryAgainBtn) tryAgainBtn.addEventListener('click', startPractice);
+    })();
+  </script>
+</body>
+</html>
